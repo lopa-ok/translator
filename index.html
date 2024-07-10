@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python 2 to Python 3 Translator</title>
+    <title>Python Translator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Python 2 to Python 3 Translator</h1>
-        <textarea id="inputCode" placeholder="Enter Python 2 code here..."></textarea>
-        <button id="translateButton">Translate</button>
-        <textarea id="outputCode" placeholder="Python 3 code will appear here..." readonly></textarea>
+        <h1>Python Translator</h1>
+        <textarea id="inputCode" placeholder="Enter Python code here..."></textarea>
+        <div class="toggle-container">
+            <label class="toggle-label">Translate from Python 2 to Python 3</label>
+            <label class="switch">
+                <input type="checkbox" id="toggleButton">
+                <span class="slider round"></span>
+            </label>
+            <label class="toggle-label">Translate from Python 3 to Python 2</label>
+        </div>
+        <button class="bubble-button" id="translateButton">Translate</button>
+        <textarea id="outputCode" placeholder="Translated Python code will appear here..." readonly></textarea>
     </div>
     <script src="script.js"></script>
 </body>

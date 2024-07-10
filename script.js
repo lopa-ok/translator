@@ -1,27 +1,50 @@
-document.getElementById('translateButton').addEventListener('click', function() {
-    const inputCode = document.getElementById('inputCode').value;
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('toggleButton');
+    const translateButton = document.getElementById('translateButton');
+    const inputCode = document.getElementById('inputCode');
+    const outputCode = document.getElementById('outputCode');
 
-    
-    let outputCode = inputCode;
+    translateButton.addEventListener('click', function() {
+        let code = inputCode.value.trim();
 
-    
-    outputCode = outputCode.replace(/print\s+"([^"]*)"/g, 'print("$1")');
-    outputCode = outputCode.replace(/print\s+'([^']*)'/g, "print('$1')");
-    outputCode = outputCode.replace(/print\s+(.*)/g, 'print($1)');
+        if (toggleButton.checked) {
+            code = translatePython3toPython2(code);
+        } else {
+            code = translatePython2toPython3(code);
+        }
 
-    
-    outputCode = outputCode.replace(/\bxrange\b/g, 'range');
+        outputCode.value = code;
+    });
 
-    
-    outputCode = outputCode.replace(/([^\/\*])\/([^\/])/g, '$1//$2');
+    function translatePython3toPython2(code) {
+        code = code.replace(/print\s+\("([^"]*)"\)/g, 'print "$1"');
+        code = code.replace(/print\s+\('([^']*)'\)/g, "print '$1'");
+        code = code.replace(/print\s+\((.*)\)/g, 'print $1');
 
-    
-    outputCode = outputCode.replace(/except\s+(\w+),\s+(\w+):/g, 'except $1 as $2:');
+        code = code.replace(/\brange\b/g, 'xrange');
 
-    
-    outputCode = outputCode.replace(/u(['"])/g, '$1');
+        code = code.replace(/([^\/\*])\/\/([^\/])/g, '$1/$2');
 
-    
+        code = code.replace(/except\s+(\w+)\s+as\s+(\w+):/g, 'except $1, $2:');
 
-    document.getElementById('outputCode').value = outputCode;
+        code = code.replace(/(['"])([^'"]*?)\1/g, "u$1$2$1");
+
+        return code;
+    }
+
+    function translatePython2toPython3(code) {
+        code = code.replace(/print\s+"([^"]*)"/g, 'print("$1")');
+        code = code.replace(/print\s+'([^']*)'/g, "print('$1')");
+        code = code.replace(/print\s+(.*)/g, 'print($1)');
+
+        code = code.replace(/\bxrange\b/g, 'range');
+
+
+        code = code.replace(/except\s+(\w+),\s+(\w+):/g, 'except $1 as $2:');
+
+        code = code.replace(/u(['"])/g, '$1');
+
+        return code;
+    }
 });
+
